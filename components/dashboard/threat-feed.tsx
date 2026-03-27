@@ -54,7 +54,7 @@ export function ThreatFeed({ events, className }: ThreatFeedProps) {
             <p className="text-xs text-muted-foreground mt-0.5">Real-time AML/Sanctions monitoring</p>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-destructive/10 border border-destructive/20">
-            <div className="h-1.5 w-1.5 rounded-full bg-destructive animate-pulse" />
+            <div className="h-1.5 w-1.5 rounded-full bg-destructive" />
             <span className="text-xs font-medium text-destructive">Monitoring</span>
           </div>
         </div>
@@ -77,9 +77,7 @@ export function ThreatFeed({ events, className }: ThreatFeedProps) {
               <div className="flex items-start gap-3">
                 <div className={cn("p-2 rounded-lg border transition-transform group-hover:scale-110", config.bg, config.border)}>
                   <Icon className={cn("h-4 w-4", config.color)} />
-                  {config.pulse && (
-                    <span className={cn("absolute inset-0 rounded-lg animate-ping opacity-30", config.bg)} />
-                  )}
+                  
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">

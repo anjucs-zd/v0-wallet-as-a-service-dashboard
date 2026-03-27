@@ -51,15 +51,7 @@ export function LivePulse({ status = "live", label, className }: LivePulseProps)
         className
       )}
     >
-      <div className="relative">
-        <div className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
-        <div
-          className={cn(
-            "absolute inset-0 h-1.5 w-1.5 rounded-full animate-ping",
-            config.dot
-          )}
-        />
-      </div>
+      <div className={cn("h-1.5 w-1.5 rounded-full", config.dot)} />
       <span className={cn("text-xs font-medium", config.text)}>{config.label}</span>
     </div>
   )

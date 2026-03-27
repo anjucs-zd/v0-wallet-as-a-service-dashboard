@@ -56,7 +56,7 @@ export function NetworkStatus({
             <h3 className="font-semibold text-foreground">Infrastructure Status</h3>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/10 border border-success/20">
-            <div className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+            <div className="h-1.5 w-1.5 rounded-full bg-success" />
             <span className="text-xs font-medium text-success">Operational</span>
           </div>
         </div>
@@ -101,9 +101,7 @@ export function NetworkStatus({
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <div className={cn("h-2.5 w-2.5 rounded-full", config.color)} />
-                    {config.pulse && (
-                      <div className={cn("absolute inset-0 h-2.5 w-2.5 rounded-full animate-ping opacity-40", config.color)} />
-                    )}
+                    
                   </div>
                   <div>
                     <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{node.name}</p>

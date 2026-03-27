@@ -59,7 +59,7 @@ export function PillarCard({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <div className={cn("h-2 w-2 rounded-full animate-pulse", statusConfig[status].color)} />
+          <div className={cn("h-2 w-2 rounded-full", statusConfig[status].color)} />
           <span className={cn("text-xs font-medium", statusConfig[status].textColor)}>
             {statusConfig[status].text}
           </span>

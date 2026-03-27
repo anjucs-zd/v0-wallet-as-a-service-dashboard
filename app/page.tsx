@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Header } from "@/components/dashboard/header"
 import { HeroStat } from "@/components/dashboard/hero-stat"
 import { TreasuryPanel } from "@/components/dashboard/treasury-panel"
@@ -8,28 +9,28 @@ import { PolicyPanel } from "@/components/dashboard/policy-panel"
 import { ThreatFeed } from "@/components/dashboard/threat-feed"
 import { ActivityFeed } from "@/components/dashboard/activity-feed"
 import { NetworkStatus } from "@/components/dashboard/network-status"
-import { LiveMetricBar } from "@/components/dashboard/real-time-ticker"
 import { SecurityRing, ThreatCounter } from "@/components/dashboard/security-ring"
 import { AnimatedCounter, formatCurrency } from "@/components/dashboard/animated-counter"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  Wallet,
-  ShieldCheck,
+  Landmark,
+  Shield,
   FileCheck,
   TrendingUp,
   Building2,
   Users,
   Globe,
   Zap,
-  Landmark,
-  Shield,
   Ban,
   Lock,
   Server,
-  Clock,
-  ArrowRightLeft,
   BadgeCheck,
   DollarSign,
   LineChart,
+  ArrowRightLeft,
+  Activity,
+  Wallet,
+  Clock,
 } from "lucide-react"
 
 // Mock data for the dashboard
@@ -93,406 +94,501 @@ const networkNodes = [
 ]
 
 export default function DashboardPage() {
+  const [activeTab, setActiveTab] = useState("overview")
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <Header />
 
-      {/* Live Metrics Bar */}
-      <LiveMetricBar
-        metrics={[
-          { label: "TPS", value: "4,521", color: "primary", pulse: true },
-          { label: "Pending TX", value: "23", color: "warning" },
-          { label: "Network", value: "99.99%", color: "success" },
-          { label: "Gas", value: "12 gwei", color: "info" },
-          { label: "Block", value: "#18,432,891", color: "primary" },
-        ]}
-      />
-
-      <main className="p-4 lg:p-6 space-y-6">
-        {/* Hero Stats - Main KPIs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <HeroStat
-            title="Total Assets Under Management"
-            value={2470000000}
-            formatter={formatCurrency}
-            subValue="Across 4 institutional asset classes"
-            trend={{ value: "+8.2% MTD", direction: "up" }}
-            icon={Landmark}
-            accentColor="primary"
-            valueClassName="text-primary"
-            size="large"
-          />
-          <HeroStat
-            title="24h Transaction Volume"
-            value={312000000}
-            formatter={formatCurrency}
-            subValue="18,432 transactions processed"
-            trend={{ value: "+12.4%", direction: "up" }}
-            icon={ArrowRightLeft}
-            accentColor="info"
-            valueClassName="text-info"
-            size="large"
-          />
-          <HeroStat
-            title="Prevented Loss (MTD)"
-            value={124500000}
-            formatter={formatCurrency}
-            subValue="847 threats blocked this month"
-            trend={{ value: "100% blocked", direction: "up" }}
-            icon={Shield}
-            accentColor="destructive"
-            valueClassName="text-destructive"
-            size="large"
-          />
-          <HeroStat
-            title="Active Yield Return"
-            value={4.87}
-            suffix="%"
-            decimals={2}
-            subValue="$33.1M monthly interest"
-            trend={{ value: "+0.3%", direction: "up" }}
-            icon={TrendingUp}
-            accentColor="success"
-            valueClassName="text-success"
-            size="large"
-          />
-        </div>
-
-        {/* Secondary KPIs Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-            <div className="flex items-center gap-2 text-muted-foreground mb-2">
-              <Wallet className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-wide">Active Wallets</span>
+      {/* Live Status Bar */}
+      <div className="border-b border-border bg-card/50 px-4 py-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-success" />
+              <span className="text-xs font-medium text-foreground">System Operational</span>
             </div>
-            <p className="text-2xl font-bold font-mono text-foreground">
-              <AnimatedCounter value={3842} duration={2000} />
-            </p>
-            <p className="text-xs text-success mt-1">+124 this week</p>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-            <div className="flex items-center gap-2 text-muted-foreground mb-2">
-              <Building2 className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-wide">Entities</span>
-            </div>
-            <p className="text-2xl font-bold font-mono text-foreground">
-              <AnimatedCounter value={47} duration={1500} />
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">12 conglomerates</p>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-            <div className="flex items-center gap-2 text-muted-foreground mb-2">
-              <Globe className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-wide">Banks</span>
-            </div>
-            <p className="text-2xl font-bold font-mono text-foreground">
-              <AnimatedCounter value={28} duration={1500} />
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">UAE & International</p>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-            <div className="flex items-center gap-2 text-muted-foreground mb-2">
-              <Users className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-wide">Users</span>
-            </div>
-            <p className="text-2xl font-bold font-mono text-foreground">
-              <AnimatedCounter value={1247} duration={2000} />
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">Authorized operators</p>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-            <div className="flex items-center gap-2 text-muted-foreground mb-2">
-              <Zap className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-wide">API Calls</span>
-            </div>
-            <p className="text-2xl font-bold font-mono text-foreground">
-              <AnimatedCounter value={2.4} decimals={1} suffix="M" duration={2000} />
-            </p>
-            <p className="text-xs text-success mt-1">99.9% success</p>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-            <div className="flex items-center gap-2 text-muted-foreground mb-2">
-              <Clock className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-wide">Uptime</span>
-            </div>
-            <p className="text-2xl font-bold font-mono text-success">
-              <AnimatedCounter value={99.99} decimals={2} suffix="%" duration={1500} />
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">Since launch</p>
-          </div>
-        </div>
-
-        {/* Infrastructure Pillars */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="group bg-card border border-border rounded-xl p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
-            <div className="flex items-start gap-4">
-              <div className="h-14 w-14 rounded-xl bg-primary/20 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
-                <Landmark className="h-7 w-7 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg text-foreground">Treasury Infrastructure</h3>
-                <p className="text-sm text-muted-foreground mt-1">Institutional-grade liquidity management with automated yield optimization</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3 mt-5">
-              <div className="text-center p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xl font-bold font-mono text-primary">
-                  <AnimatedCounter value={4} duration={1000} />
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">Yield Pools</p>
-              </div>
-              <div className="text-center p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xl font-bold font-mono text-success">5.2%</p>
-                <p className="text-xs text-muted-foreground mt-1">Top APY</p>
-              </div>
-              <div className="text-center p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xl font-bold font-mono text-foreground">$33M</p>
-                <p className="text-xs text-muted-foreground mt-1">Monthly Yield</p>
-              </div>
+            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+              <span>TPS: <span className="font-mono text-foreground">4,521</span></span>
+              <span>Latency: <span className="font-mono text-foreground">12ms</span></span>
+              <span>Block: <span className="font-mono text-foreground">#18,432,891</span></span>
             </div>
           </div>
-
-          <div className="group bg-card border border-border rounded-xl p-6 hover:border-destructive/50 transition-all duration-300 hover:shadow-lg hover:shadow-destructive/5">
-            <div className="flex items-start gap-4">
-              <div className="h-14 w-14 rounded-xl bg-destructive/20 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
-                <Shield className="h-7 w-7 text-destructive" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg text-foreground">Compliance Engine</h3>
-                <p className="text-sm text-muted-foreground mt-1">Real-time AML/KYC/Sanctions with ML-powered threat detection</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3 mt-5">
-              <div className="text-center p-3 bg-destructive/10 rounded-lg border border-destructive/20">
-                <p className="text-xl font-bold font-mono text-destructive">
-                  <AnimatedCounter value={847} duration={2000} />
-                </p>
-                <p className="text-xs text-destructive/80 mt-1">Blocked</p>
-              </div>
-              <div className="text-center p-3 bg-warning/10 rounded-lg border border-warning/20">
-                <p className="text-xl font-bold font-mono text-warning">
-                  <AnimatedCounter value={156} duration={1800} />
-                </p>
-                <p className="text-xs text-warning/80 mt-1">AML Alerts</p>
-              </div>
-              <div className="text-center p-3 bg-success/10 rounded-lg border border-success/20">
-                <p className="text-xl font-bold font-mono text-success">99.87%</p>
-                <p className="text-xs text-success/80 mt-1">Auto-Cleared</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="group bg-card border border-border rounded-xl p-6 hover:border-info/50 transition-all duration-300 hover:shadow-lg hover:shadow-info/5">
-            <div className="flex items-start gap-4">
-              <div className="h-14 w-14 rounded-xl bg-info/20 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
-                <FileCheck className="h-7 w-7 text-info" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg text-foreground">Policy Governance</h3>
-                <p className="text-sm text-muted-foreground mt-1">Automated enforcement with multi-signature approval workflows</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3 mt-5">
-              <div className="text-center p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xl font-bold font-mono text-info">
-                  <AnimatedCounter value={47} duration={1500} />
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">Rules Active</p>
-              </div>
-              <div className="text-center p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xl font-bold font-mono text-foreground">100%</p>
-                <p className="text-xs text-muted-foreground mt-1">Enforced</p>
-              </div>
-              <div className="text-center p-3 bg-secondary/50 rounded-lg">
-                <p className="text-xl font-bold font-mono text-warning">
-                  <AnimatedCounter value={4} duration={1000} />
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">Pending</p>
-              </div>
+          <div className="flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-1.5 text-muted-foreground">
+              <Clock className="h-3.5 w-3.5" />
+              <span>Last sync: 2s ago</span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* Left Column - Treasury */}
-          <TreasuryPanel
-            totalAum="$2.47B"
-            dailyVolume="$312M"
-            averageYield="4.87%"
-            assets={treasuryAssets}
-            chartData={treasuryChartData}
-          />
+      {/* Main Content with Tabs */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+          {/* Tab Navigation */}
+          <div className="border-b border-border bg-card/30 px-4">
+            <TabsList className="h-12 bg-transparent p-0 gap-1">
+              <TabsTrigger 
+                value="overview" 
+                className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary/30 border border-transparent rounded-lg px-4 h-9"
+              >
+                <Activity className="h-4 w-4 mr-2" />
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="treasury" 
+                className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary/30 border border-transparent rounded-lg px-4 h-9"
+              >
+                <Landmark className="h-4 w-4 mr-2" />
+                Treasury
+              </TabsTrigger>
+              <TabsTrigger 
+                value="compliance" 
+                className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive data-[state=active]:border-destructive/30 border border-transparent rounded-lg px-4 h-9"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Compliance
+              </TabsTrigger>
+              <TabsTrigger 
+                value="policy" 
+                className="data-[state=active]:bg-info/10 data-[state=active]:text-info data-[state=active]:border-info/30 border border-transparent rounded-lg px-4 h-9"
+              >
+                <FileCheck className="h-4 w-4 mr-2" />
+                Policy
+              </TabsTrigger>
+              <TabsTrigger 
+                value="activity" 
+                className="data-[state=active]:bg-warning/10 data-[state=active]:text-warning data-[state=active]:border-warning/30 border border-transparent rounded-lg px-4 h-9"
+              >
+                <Zap className="h-4 w-4 mr-2" />
+                Activity
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          {/* Middle Column - Compliance */}
-          <CompliancePanel
-            totalScreened="18,432"
-            threatsBlocked="847"
-            sanctionsHits="23"
-            amlAlerts="156"
-            metrics={[]}
-            chartData={complianceChartData}
-          />
+          {/* Tab Content */}
+          <div className="flex-1 overflow-auto">
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="h-full m-0 p-4">
+              <div className="space-y-4">
+                {/* Hero Stats Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                  <HeroStat
+                    title="Total Assets Under Management"
+                    value={2470000000}
+                    formatter={formatCurrency}
+                    subValue="Across 4 institutional asset classes"
+                    trend={{ value: "+8.2% MTD", direction: "up" }}
+                    icon={Landmark}
+                    accentColor="primary"
+                    valueClassName="text-primary"
+                    size="large"
+                  />
+                  <HeroStat
+                    title="24h Transaction Volume"
+                    value={312000000}
+                    formatter={formatCurrency}
+                    subValue="18,432 transactions processed"
+                    trend={{ value: "+12.4%", direction: "up" }}
+                    icon={ArrowRightLeft}
+                    accentColor="info"
+                    valueClassName="text-info"
+                    size="large"
+                  />
+                  <HeroStat
+                    title="Prevented Loss (MTD)"
+                    value={124500000}
+                    formatter={formatCurrency}
+                    subValue="847 threats blocked this month"
+                    trend={{ value: "100% blocked", direction: "up" }}
+                    icon={Shield}
+                    accentColor="destructive"
+                    valueClassName="text-destructive"
+                    size="large"
+                  />
+                  <HeroStat
+                    title="Active Yield Return"
+                    value={4.87}
+                    suffix="%"
+                    decimals={2}
+                    subValue="$33.1M monthly interest"
+                    trend={{ value: "+0.3%", direction: "up" }}
+                    icon={TrendingUp}
+                    accentColor="success"
+                    valueClassName="text-success"
+                    size="large"
+                  />
+                </div>
 
-          {/* Right Column - Policy */}
-          <PolicyPanel
-            totalPolicies={47}
-            activePolicies={43}
-            pendingApprovals={4}
-            complianceScore={98.7}
-            rules={policyRules}
-          />
-        </div>
+                {/* Secondary KPIs + Infrastructure */}
+                <div className="grid grid-cols-12 gap-4">
+                  {/* Left: KPI Grid */}
+                  <div className="col-span-12 xl:col-span-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                      <MetricCard icon={Wallet} label="Active Wallets" value={3842} suffix="" trend="+124 this week" trendColor="success" />
+                      <MetricCard icon={Building2} label="Entities" value={47} suffix="" subtext="12 conglomerates" />
+                      <MetricCard icon={Globe} label="Banks" value={28} suffix="" subtext="UAE & International" />
+                      <MetricCard icon={Users} label="Users" value={1247} suffix="" subtext="Authorized operators" />
+                      <MetricCard icon={Zap} label="API Calls" value={2.4} suffix="M" decimals={1} trend="99.9% success" trendColor="success" />
+                      <MetricCard icon={Clock} label="Uptime" value={99.99} suffix="%" decimals={2} subtext="Since launch" valueColor="success" />
+                    </div>
 
-        {/* Security Overview Section */}
-        <div className="bg-card border border-border rounded-xl p-6">
-          <div className="flex items-center justify-between mb-6">
+                    {/* Infrastructure Pillars */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                      <InfraPillarCard
+                        icon={Landmark}
+                        title="Treasury Infrastructure"
+                        description="Institutional-grade liquidity management"
+                        color="primary"
+                        stats={[
+                          { label: "Yield Pools", value: "4" },
+                          { label: "Top APY", value: "5.2%" },
+                          { label: "Monthly Yield", value: "$33M" },
+                        ]}
+                        onClick={() => setActiveTab("treasury")}
+                      />
+                      <InfraPillarCard
+                        icon={Shield}
+                        title="Compliance Engine"
+                        description="Real-time AML/KYC/Sanctions screening"
+                        color="destructive"
+                        stats={[
+                          { label: "Blocked", value: "847" },
+                          { label: "AML Alerts", value: "156" },
+                          { label: "Auto-Cleared", value: "99.87%" },
+                        ]}
+                        onClick={() => setActiveTab("compliance")}
+                      />
+                      <InfraPillarCard
+                        icon={FileCheck}
+                        title="Policy Governance"
+                        description="Automated enforcement workflows"
+                        color="info"
+                        stats={[
+                          { label: "Rules Active", value: "47" },
+                          { label: "Enforced", value: "100%" },
+                          { label: "Pending", value: "4" },
+                        ]}
+                        onClick={() => setActiveTab("policy")}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Right: Security Ring + Quick Stats */}
+                  <div className="col-span-12 xl:col-span-4 space-y-4">
+                    <div className="bg-card border border-border rounded-xl p-5">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-semibold text-foreground">Security Status</h3>
+                        <div className="flex items-center gap-1.5 px-2 py-1 bg-success/10 border border-success/20 rounded-full">
+                          <div className="h-1.5 w-1.5 rounded-full bg-success" />
+                          <span className="text-xs font-medium text-success">Protected</span>
+                        </div>
+                      </div>
+                      <SecurityRing score={98.7} label="Compliance Score" sublabel="Exceeds regulatory minimum" />
+                      <div className="mt-4">
+                        <ThreatCounter blocked={847} flagged={156} cleared={18} />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <QuickStatCard icon={Server} label="HSM Modules" value="6" status="All operational" statusColor="success" />
+                      <QuickStatCard icon={Lock} label="Cold Storage" value="$1.8B" status="73% of AUM" />
+                      <QuickStatCard icon={DollarSign} label="Liquidity" value="$680M" status="Instant access" valueColor="success" />
+                      <QuickStatCard icon={LineChart} label="Daily P&L" value="+$1.1M" status="Yield accrued" valueColor="success" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Treasury Tab */}
+            <TabsContent value="treasury" className="h-full m-0 p-4">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 h-full">
+                <div className="xl:col-span-2">
+                  <TreasuryPanel
+                    totalAum="$2.47B"
+                    dailyVolume="$312M"
+                    averageYield="4.87%"
+                    assets={treasuryAssets}
+                    chartData={treasuryChartData}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <div className="bg-card border border-border rounded-xl p-5">
+                    <h3 className="text-sm font-semibold text-foreground mb-4">Treasury Quick Stats</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between py-2 border-b border-border">
+                        <span className="text-sm text-muted-foreground">Cold Storage</span>
+                        <span className="font-mono font-semibold text-foreground">$1.8B</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 border-b border-border">
+                        <span className="text-sm text-muted-foreground">Hot Wallet</span>
+                        <span className="font-mono font-semibold text-foreground">$680M</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 border-b border-border">
+                        <span className="text-sm text-muted-foreground">Monthly Yield</span>
+                        <span className="font-mono font-semibold text-success">+$33.1M</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2">
+                        <span className="text-sm text-muted-foreground">Best Performing</span>
+                        <span className="font-mono font-semibold text-primary">USDC @ 5.2%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <ActivityFeed activities={activities.filter(a => a.type === "transfer_in" || a.type === "transfer_out" || a.type === "approval")} />
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Compliance Tab */}
+            <TabsContent value="compliance" className="h-full m-0 p-4">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 h-full">
+                <div className="xl:col-span-2">
+                  <CompliancePanel
+                    totalScreened="18,432"
+                    threatsBlocked="847"
+                    sanctionsHits="23"
+                    amlAlerts="156"
+                    metrics={[]}
+                    chartData={complianceChartData}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <div className="bg-card border border-border rounded-xl p-5">
+                    <h3 className="text-sm font-semibold text-foreground mb-4">Threat Intelligence</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-center">
+                        <Ban className="h-5 w-5 text-destructive mx-auto mb-1" />
+                        <p className="text-lg font-bold font-mono text-destructive"><AnimatedCounter value={23} duration={1500} /></p>
+                        <p className="text-xs text-destructive/80">OFAC Hits</p>
+                      </div>
+                      <div className="bg-warning/10 border border-warning/20 rounded-lg p-3 text-center">
+                        <Shield className="h-5 w-5 text-warning mx-auto mb-1" />
+                        <p className="text-lg font-bold font-mono text-warning"><AnimatedCounter value={89} duration={1500} /></p>
+                        <p className="text-xs text-warning/80">PEP Checks</p>
+                      </div>
+                      <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-center">
+                        <Lock className="h-5 w-5 text-destructive mx-auto mb-1" />
+                        <p className="text-lg font-bold font-mono text-destructive"><AnimatedCounter value={134} duration={1500} /></p>
+                        <p className="text-xs text-destructive/80">Mixers Blocked</p>
+                      </div>
+                      <div className="bg-success/10 border border-success/20 rounded-lg p-3 text-center">
+                        <BadgeCheck className="h-5 w-5 text-success mx-auto mb-1" />
+                        <p className="text-lg font-bold font-mono text-success"><AnimatedCounter value={1247} duration={1500} /></p>
+                        <p className="text-xs text-success/80">KYC Verified</p>
+                      </div>
+                    </div>
+                  </div>
+                  <ThreatFeed events={threatEvents} />
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Policy Tab */}
+            <TabsContent value="policy" className="h-full m-0 p-4">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 h-full">
+                <div className="xl:col-span-2">
+                  <PolicyPanel
+                    totalPolicies={47}
+                    activePolicies={43}
+                    pendingApprovals={4}
+                    complianceScore={98.7}
+                    rules={policyRules}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <div className="bg-card border border-border rounded-xl p-5">
+                    <h3 className="text-sm font-semibold text-foreground mb-4">Governance Overview</h3>
+                    <SecurityRing score={98.7} label="Policy Compliance" sublabel="All rules enforced" />
+                  </div>
+                  <NetworkStatus
+                    nodes={networkNodes}
+                    uptime="99.99%"
+                    lastBlock="2.3s"
+                    tps="4,521"
+                  />
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Activity Tab */}
+            <TabsContent value="activity" className="h-full m-0 p-4">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 h-full">
+                <div className="xl:col-span-2">
+                  <ActivityFeed activities={activities} className="h-full" />
+                </div>
+                <div className="space-y-4">
+                  <ThreatFeed events={threatEvents} />
+                  <NetworkStatus
+                    nodes={networkNodes}
+                    uptime="99.99%"
+                    lastBlock="2.3s"
+                    tps="4,521"
+                  />
+                </div>
+              </div>
+            </TabsContent>
+          </div>
+        </Tabs>
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-border px-4 py-3 bg-card/30">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-xs">V</span>
+            </div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Security & Compliance Overview</h3>
-              <p className="text-sm text-muted-foreground">Real-time threat monitoring and compliance status</p>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-success/10 border border-success/20 rounded-full">
-              <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
-              <span className="text-sm font-medium text-success">All Systems Protected</span>
+              <span className="text-sm font-bold text-foreground tracking-wide">VAULT</span>
+              <span className="text-xs text-muted-foreground ml-2">Institutional WaaS Infrastructure</span>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <SecurityRing score={98.7} label="Compliance Score" sublabel="Exceeds regulatory minimum" />
-            
-            <div className="md:col-span-3">
-              <ThreatCounter blocked={847} flagged={156} cleared={18} />
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-                <div className="bg-secondary/50 rounded-lg p-3">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                    <Ban className="h-3.5 w-3.5" />
-                    <span>OFAC Hits</span>
-                  </div>
-                  <p className="text-lg font-bold font-mono text-destructive">
-                    <AnimatedCounter value={23} duration={1500} />
-                  </p>
-                </div>
-                <div className="bg-secondary/50 rounded-lg p-3">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                    <Shield className="h-3.5 w-3.5" />
-                    <span>PEP Checks</span>
-                  </div>
-                  <p className="text-lg font-bold font-mono text-warning">
-                    <AnimatedCounter value={89} duration={1500} />
-                  </p>
-                </div>
-                <div className="bg-secondary/50 rounded-lg p-3">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                    <Lock className="h-3.5 w-3.5" />
-                    <span>Mixer Blocked</span>
-                  </div>
-                  <p className="text-lg font-bold font-mono text-destructive">
-                    <AnimatedCounter value={134} duration={1500} />
-                  </p>
-                </div>
-                <div className="bg-secondary/50 rounded-lg p-3">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                    <BadgeCheck className="h-3.5 w-3.5" />
-                    <span>KYC Verified</span>
-                  </div>
-                  <p className="text-lg font-bold font-mono text-success">
-                    <AnimatedCounter value={1247} duration={2000} />
-                  </p>
-                </div>
-              </div>
+          <div className="flex items-center gap-6 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <BadgeCheck className="h-3.5 w-3.5 text-primary" />
+              <span>ADGM FSRA Licensed</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Shield className="h-3.5 w-3.5 text-primary" />
+              <span>ISO 27001</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Lock className="h-3.5 w-3.5 text-primary" />
+              <span>SOC 2 Type II</span>
             </div>
           </div>
         </div>
+      </footer>
+    </div>
+  )
+}
 
-        {/* Bottom Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Threat Feed */}
-          <ThreatFeed events={threatEvents} className="lg:col-span-1" />
+// Helper Components
+function MetricCard({ 
+  icon: Icon, 
+  label, 
+  value, 
+  suffix = "", 
+  decimals = 0, 
+  trend, 
+  trendColor, 
+  subtext,
+  valueColor 
+}: { 
+  icon: React.ElementType
+  label: string
+  value: number
+  suffix?: string
+  decimals?: number
+  trend?: string
+  trendColor?: "success" | "destructive" | "warning"
+  subtext?: string
+  valueColor?: "success" | "destructive" | "warning" | "primary"
+}) {
+  const colorClasses = {
+    success: "text-success",
+    destructive: "text-destructive",
+    warning: "text-warning",
+    primary: "text-primary"
+  }
+  
+  return (
+    <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
+      <div className="flex items-center gap-2 text-muted-foreground mb-2">
+        <Icon className="h-4 w-4" />
+        <span className="text-xs uppercase tracking-wide">{label}</span>
+      </div>
+      <p className={`text-2xl font-bold font-mono ${valueColor ? colorClasses[valueColor] : "text-foreground"}`}>
+        <AnimatedCounter value={value} decimals={decimals} suffix={suffix} duration={2000} />
+      </p>
+      {trend && (
+        <p className={`text-xs mt-1 ${trendColor ? colorClasses[trendColor] : "text-muted-foreground"}`}>{trend}</p>
+      )}
+      {subtext && !trend && (
+        <p className="text-xs text-muted-foreground mt-1">{subtext}</p>
+      )}
+    </div>
+  )
+}
 
-          {/* Activity Feed */}
-          <ActivityFeed activities={activities} className="lg:col-span-1" />
+function InfraPillarCard({
+  icon: Icon,
+  title,
+  description,
+  color,
+  stats,
+  onClick
+}: {
+  icon: React.ElementType
+  title: string
+  description: string
+  color: "primary" | "destructive" | "info"
+  stats: { label: string; value: string }[]
+  onClick?: () => void
+}) {
+  const colorClasses = {
+    primary: "bg-primary/20 text-primary hover:border-primary/50 hover:shadow-primary/5",
+    destructive: "bg-destructive/20 text-destructive hover:border-destructive/50 hover:shadow-destructive/5",
+    info: "bg-info/20 text-info hover:border-info/50 hover:shadow-info/5"
+  }
 
-          {/* Network Status & Key Metrics */}
-          <div className="space-y-4">
-            <NetworkStatus
-              nodes={networkNodes}
-              uptime="99.99%"
-              lastBlock="2.3s"
-              tps="4,521"
-            />
-
-            {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/30">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <Server className="h-4 w-4" />
-                  <span className="text-xs">HSM Modules</span>
-                </div>
-                <p className="text-xl font-bold font-mono text-foreground">
-                  <AnimatedCounter value={6} duration={1000} />
-                </p>
-                <p className="text-xs text-success mt-1">All operational</p>
-              </div>
-              <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/30">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <Lock className="h-4 w-4" />
-                  <span className="text-xs">Cold Storage</span>
-                </div>
-                <p className="text-xl font-bold font-mono text-foreground">$1.8B</p>
-                <p className="text-xs text-muted-foreground mt-1">73% of AUM</p>
-              </div>
-              <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/30">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <DollarSign className="h-4 w-4" />
-                  <span className="text-xs">Liquidity</span>
-                </div>
-                <p className="text-xl font-bold font-mono text-success">$680M</p>
-                <p className="text-xs text-muted-foreground mt-1">Instant access</p>
-              </div>
-              <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/30">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <LineChart className="h-4 w-4" />
-                  <span className="text-xs">Daily P&L</span>
-                </div>
-                <p className="text-xl font-bold font-mono text-success">+$1.1M</p>
-                <p className="text-xs text-success mt-1">Yield accrued</p>
-              </div>
-            </div>
-          </div>
+  return (
+    <div 
+      className={`group bg-card border border-border rounded-xl p-5 hover:shadow-lg transition-all duration-300 cursor-pointer ${colorClasses[color].split(" ").slice(2).join(" ")}`}
+      onClick={onClick}
+    >
+      <div className="flex items-start gap-3">
+        <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${colorClasses[color].split(" ").slice(0, 2).join(" ")}`}>
+          <Icon className="h-5 w-5" />
         </div>
-
-        {/* Footer */}
-        <footer className="border-t border-border pt-6 mt-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">V</span>
-                </div>
-                <div>
-                  <span className="text-sm font-bold text-foreground tracking-wide">VAULT</span>
-                  <p className="text-xs text-muted-foreground">Institutional WaaS Infrastructure</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-6 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <BadgeCheck className="h-3.5 w-3.5 text-primary" />
-                <span>Licensed by ADGM FSRA</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Shield className="h-3.5 w-3.5 text-primary" />
-                <span>ISO 27001 Certified</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Lock className="h-3.5 w-3.5 text-primary" />
-                <span>SOC 2 Type II Compliant</span>
-              </div>
-            </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-sm text-foreground">{title}</h3>
+          <p className="text-xs text-muted-foreground mt-0.5 truncate">{description}</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-2 mt-4">
+        {stats.map((stat, i) => (
+          <div key={i} className="text-center p-2 bg-secondary/50 rounded-lg">
+            <p className={`text-sm font-bold font-mono ${colorClasses[color].split(" ")[1]}`}>{stat.value}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
           </div>
-        </footer>
-      </main>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function QuickStatCard({
+  icon: Icon,
+  label,
+  value,
+  status,
+  statusColor,
+  valueColor
+}: {
+  icon: React.ElementType
+  label: string
+  value: string
+  status: string
+  statusColor?: "success" | "destructive" | "warning"
+  valueColor?: "success" | "destructive" | "warning"
+}) {
+  const colorClasses = {
+    success: "text-success",
+    destructive: "text-destructive",
+    warning: "text-warning"
+  }
+
+  return (
+    <div className="bg-card border border-border rounded-lg p-3 transition-all hover:border-primary/30">
+      <div className="flex items-center gap-2 text-muted-foreground mb-1">
+        <Icon className="h-3.5 w-3.5" />
+        <span className="text-xs">{label}</span>
+      </div>
+      <p className={`text-lg font-bold font-mono ${valueColor ? colorClasses[valueColor] : "text-foreground"}`}>{value}</p>
+      <p className={`text-xs mt-0.5 ${statusColor ? colorClasses[statusColor] : "text-muted-foreground"}`}>{status}</p>
     </div>
   )
 }

@@ -19,7 +19,7 @@ export function Header({ className }: HeaderProps) {
       <div className="h-full px-6 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center animate-glow">
+            <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">V</span>
             </div>
             <div>
@@ -71,8 +71,7 @@ export function Header({ className }: HeaderProps) {
 
           <Button variant="ghost" size="icon" className="relative hover:bg-primary/10">
             <Bell className="h-4 w-4 text-muted-foreground" />
-            <span className="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-destructive animate-pulse" />
-            <span className="absolute top-0.5 right-0.5 h-3.5 w-3.5 rounded-full bg-destructive/30 animate-ping" />
+            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-destructive" />
           </Button>
 
           <Button variant="ghost" size="icon" className="hover:bg-primary/10">

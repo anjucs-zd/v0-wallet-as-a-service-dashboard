@@ -51,7 +51,7 @@ export function TreasuryPanel({
             </div>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/10 border border-success/20">
-            <div className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+            <div className="h-1.5 w-1.5 rounded-full bg-success" />
             <span className="text-xs font-medium text-success">Live</span>
           </div>
         </div>

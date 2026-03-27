@@ -78,7 +78,7 @@ export function LiveMetricBar({ metrics, className }: LiveMetricBarProps) {
       )}
     >
       <div className="flex items-center gap-2">
-        <Activity className="h-4 w-4 text-primary animate-pulse" />
+        <Activity className="h-4 w-4 text-primary" />
         <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           Real-time Metrics
         </span>
@@ -103,7 +103,7 @@ export function LiveMetricBar({ metrics, className }: LiveMetricBarProps) {
                 )}
               >
                 {metric.pulse && (
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-current mr-1.5 animate-pulse" />
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-current mr-1.5" />
                 )}
                 {metric.value}
               </span>
