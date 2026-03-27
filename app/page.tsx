@@ -222,13 +222,10 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-12 gap-4">
                   {/* Left: KPI Grid */}
                   <div className="col-span-12 xl:col-span-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <MetricCard icon={Wallet} label="Active Wallets" value={3842} suffix="" trend="+124 this week" trendColor="success" />
                       <MetricCard icon={Building2} label="Entities" value={47} suffix="" subtext="12 conglomerates" />
-
                       <MetricCard icon={Users} label="Users" value={1247} suffix="" subtext="Authorized operators" />
-
-
                     </div>
 
                     {/* Infrastructure Pillars */}
@@ -426,7 +423,7 @@ export default function DashboardPage() {
               <span className="text-primary-foreground font-bold text-xs">V</span>
             </div>
             <div>
-              <span className="text-sm font-bold text-foreground tracking-wide">VAULT</span>
+              <span className="text-sm font-bold text-foreground tracking-wide">DDSC-NEXUS</span>
               <span className="text-xs text-muted-foreground ml-2">Institutional WaaS Infrastructure</span>
             </div>
           </div>
@@ -473,27 +470,40 @@ function MetricCard({
   valueColor?: "success" | "destructive" | "warning" | "primary"
 }) {
   const colorClasses = {
-    success: "text-success",
-    destructive: "text-destructive",
-    warning: "text-warning",
-    primary: "text-primary"
+    success: "text-success bg-success/20",
+    destructive: "text-destructive bg-destructive/20",
+    warning: "text-warning bg-warning/20",
+    primary: "text-primary bg-primary/20"
   }
 
+  const borderClasses = {
+    success: "hover:border-success/50",
+    destructive: "hover:border-destructive/50",
+    warning: "hover:border-warning/50",
+    primary: "hover:border-primary/50"
+  }
+
+  const iconColor = trendColor || "primary"
+
   return (
-    <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-      <div className="flex items-center gap-2 text-muted-foreground mb-2">
-        <Icon className="h-4 w-4" />
-        <span className="text-xs uppercase tracking-wide">{label}</span>
+    <div className={`group bg-card border border-border rounded-xl p-6 transition-all ${borderClasses[iconColor]}`}>
+      <div className="flex items-start gap-4">
+        <div className={`h-12 w-12 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${colorClasses[iconColor]}`}>
+          <Icon className="h-6 w-6" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs uppercase tracking-wider font-semibold text-muted-foreground mb-1">{label}</p>
+          <p className="text-3xl font-bold font-mono text-foreground">
+            <AnimatedCounter value={value} decimals={decimals} suffix={suffix} duration={2000} />
+          </p>
+          {trend && (
+            <p className={`text-xs mt-2 font-medium ${trendColor ? colorClasses[trendColor].split(" ")[0] : "text-success"}`}>{trend}</p>
+          )}
+          {subtext && !trend && (
+            <p className="text-xs text-muted-foreground mt-2">{subtext}</p>
+          )}
+        </div>
       </div>
-      <p className={`text-2xl font-bold font-mono ${valueColor ? colorClasses[valueColor] : "text-foreground"}`}>
-        <AnimatedCounter value={value} decimals={decimals} suffix={suffix} duration={2000} />
-      </p>
-      {trend && (
-        <p className={`text-xs mt-1 ${trendColor ? colorClasses[trendColor] : "text-muted-foreground"}`}>{trend}</p>
-      )}
-      {subtext && !trend && (
-        <p className="text-xs text-muted-foreground mt-1">{subtext}</p>
-      )}
     </div>
   )
 }

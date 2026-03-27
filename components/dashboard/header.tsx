@@ -25,7 +25,7 @@ export function Header({ className }: HeaderProps) {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-xl tracking-tight text-foreground">VAULT</span>
+                <span className="font-bold text-xl tracking-tight text-foreground">DDSC-NEXUS</span>
                 <span className="px-1.5 py-0.5 bg-primary/20 rounded text-[10px] font-semibold text-primary uppercase tracking-wider">
                   Enterprise
                 </span>
