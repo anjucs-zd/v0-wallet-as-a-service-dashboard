@@ -129,36 +129,36 @@ export default function DashboardPage() {
           {/* Tab Navigation */}
           <div className="border-b border-border bg-card/30 px-4">
             <TabsList className="h-12 bg-transparent p-0 gap-1">
-              <TabsTrigger 
-                value="overview" 
+              <TabsTrigger
+                value="overview"
                 className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary/30 border border-transparent rounded-lg px-4 h-9"
               >
                 <Activity className="h-4 w-4 mr-2" />
                 Overview
               </TabsTrigger>
-              <TabsTrigger 
-                value="treasury" 
+              <TabsTrigger
+                value="treasury"
                 className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-primary/30 border border-transparent rounded-lg px-4 h-9"
               >
                 <Landmark className="h-4 w-4 mr-2" />
                 Treasury
               </TabsTrigger>
-              <TabsTrigger 
-                value="compliance" 
+              <TabsTrigger
+                value="compliance"
                 className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive data-[state=active]:border-destructive/30 border border-transparent rounded-lg px-4 h-9"
               >
                 <Shield className="h-4 w-4 mr-2" />
                 Compliance
               </TabsTrigger>
-              <TabsTrigger 
-                value="policy" 
+              <TabsTrigger
+                value="policy"
                 className="data-[state=active]:bg-info/10 data-[state=active]:text-info data-[state=active]:border-info/30 border border-transparent rounded-lg px-4 h-9"
               >
                 <FileCheck className="h-4 w-4 mr-2" />
                 Policy
               </TabsTrigger>
-              <TabsTrigger 
-                value="activity" 
+              <TabsTrigger
+                value="activity"
                 className="data-[state=active]:bg-warning/10 data-[state=active]:text-warning data-[state=active]:border-warning/30 border border-transparent rounded-lg px-4 h-9"
               >
                 <Zap className="h-4 w-4 mr-2" />
@@ -228,10 +228,10 @@ export default function DashboardPage() {
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
                       <MetricCard icon={Wallet} label="Active Wallets" value={3842} suffix="" trend="+124 this week" trendColor="success" />
                       <MetricCard icon={Building2} label="Entities" value={47} suffix="" subtext="12 conglomerates" />
-                      <MetricCard icon={Globe} label="Banks" value={28} suffix="" subtext="UAE & International" />
+
                       <MetricCard icon={Users} label="Users" value={1247} suffix="" subtext="Authorized operators" />
-                      <MetricCard icon={Zap} label="API Calls" value={2.4} suffix="M" decimals={1} trend="99.9% success" trendColor="success" />
-                      <MetricCard icon={Clock} label="Uptime" value={99.99} suffix="%" decimals={2} subtext="Since launch" valueColor="success" />
+
+
                     </div>
 
                     {/* Infrastructure Pillars */}
@@ -466,17 +466,17 @@ export default function DashboardPage() {
 }
 
 // Helper Components
-function MetricCard({ 
-  icon: Icon, 
-  label, 
-  value, 
-  suffix = "", 
-  decimals = 0, 
-  trend, 
-  trendColor, 
+function MetricCard({
+  icon: Icon,
+  label,
+  value,
+  suffix = "",
+  decimals = 0,
+  trend,
+  trendColor,
   subtext,
-  valueColor 
-}: { 
+  valueColor
+}: {
   icon: React.ElementType
   label: string
   value: number
@@ -493,7 +493,7 @@ function MetricCard({
     warning: "text-warning",
     primary: "text-primary"
   }
-  
+
   return (
     <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
       <div className="flex items-center gap-2 text-muted-foreground mb-2">
@@ -535,7 +535,7 @@ function InfraPillarCard({
   }
 
   return (
-    <div 
+    <div
       className={`group bg-card border border-border rounded-xl p-5 hover:shadow-lg transition-all duration-300 cursor-pointer ${colorClasses[color].split(" ").slice(2).join(" ")}`}
       onClick={onClick}
     >

@@ -34,12 +34,7 @@ export function ActivityFeed({ activities, className }: ActivityFeedProps) {
     ActivityType,
     { icon: typeof ArrowUpRight; color: string; bg: string; border: string }
   > = {
-    transfer_in: {
-      icon: ArrowDownRight,
-      color: "text-success",
-      bg: "bg-success/10",
-      border: "border-success/20",
-    },
+    tran
     transfer_out: {
       icon: ArrowUpRight,
       color: "text-info",
