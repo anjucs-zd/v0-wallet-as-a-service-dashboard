@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils"
 import { Bell, Settings, Search, ChevronDown, Building2, Shield, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 interface HeaderProps {
   className?: string
@@ -77,6 +78,8 @@ export function Header({ className }: HeaderProps) {
           <Button variant="ghost" size="icon" className="hover:bg-primary/10">
             <Settings className="h-4 w-4 text-muted-foreground" />
           </Button>
+
+          <ThemeToggle />
 
           <div className="h-8 w-px bg-border mx-1" />
 
