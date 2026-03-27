@@ -8,7 +8,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'VAULT | Institutional WaaS Infrastructure',
+  title: 'DDSC-NEXUS | Institutional WaaS Infrastructure',
   description: 'Enterprise-grade Wallet-as-a-Service platform for regulated financial institutions',
   generator: 'v0.app',
   icons: {

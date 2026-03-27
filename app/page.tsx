@@ -45,10 +45,7 @@ const treasuryChartData = [
 ]
 
 const treasuryAssets = [
-  { name: "USDC", balance: "$1.24B", allocation: 50, yield: "5.2%", change: 2.4 },
-  { name: "USDT", balance: "$620M", allocation: 25, yield: "4.8%", change: 1.2 },
-  { name: "USD", balance: "$372M", allocation: 15, yield: "4.1%", change: 0.8 },
-  { name: "AED Stablecoin", balance: "$248M", allocation: 10, yield: "3.9%", change: 3.1 },
+  { name: "DDSC", balance: "$2.47B", allocation: 100, yield: "4.87%", change: 2.4 },
 ]
 
 const complianceChartData = [
@@ -79,10 +76,10 @@ const threatEvents = [
 ]
 
 const activities = [
-  { id: "1", type: "transfer_in" as const, title: "Incoming Settlement", description: "From Abu Dhabi Commercial Bank", timestamp: "3 min ago", amount: "+$45.2M", user: "System" },
+  { id: "1", type: "transfer_in" as const, title: "Incoming Settlement", description: "From Infinia Technologies", timestamp: "3 min ago", amount: "+$45.2M", user: "System" },
   { id: "2", type: "policy_update" as const, title: "Policy Rule Updated", description: "Transaction limit increased for verified corporates", timestamp: "15 min ago", user: "Sarah M." },
   { id: "3", type: "compliance" as const, title: "AML Alert Resolved", description: "False positive - legitimate treasury operation", timestamp: "28 min ago", user: "Ahmed K." },
-  { id: "4", type: "transfer_out" as const, title: "Outgoing Wire", description: "To Emirates NBD", timestamp: "45 min ago", amount: "-$12.8M", user: "Treasury Ops" },
+  { id: "4", type: "transfer_out" as const, title: "Outgoing Wire", description: "To Esyasoft", timestamp: "45 min ago", amount: "-$12.8M", user: "Treasury Ops" },
   { id: "5", type: "approval" as const, title: "Multi-Sig Approval", description: "Large transfer approved (3/3 signatures)", timestamp: "1 hour ago", amount: "$78.5M", user: "Executive Team" },
   { id: "6", type: "user" as const, title: "New User Added", description: "Compliance analyst role assigned", timestamp: "2 hours ago", user: "Admin" },
 ]
@@ -225,29 +222,14 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-12 gap-4">
                   {/* Left: KPI Grid */}
                   <div className="col-span-12 xl:col-span-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <MetricCard icon={Wallet} label="Active Wallets" value={3842} suffix="" trend="+124 this week" trendColor="success" />
                       <MetricCard icon={Building2} label="Entities" value={47} suffix="" subtext="12 conglomerates" />
-
                       <MetricCard icon={Users} label="Users" value={1247} suffix="" subtext="Authorized operators" />
-
-
                     </div>
 
                     {/* Infrastructure Pillars */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                      <InfraPillarCard
-                        icon={Landmark}
-                        title="Treasury Infrastructure"
-                        description="Institutional-grade liquidity management"
-                        color="primary"
-                        stats={[
-                          { label: "Yield Pools", value: "4" },
-                          { label: "Top APY", value: "5.2%" },
-                          { label: "Monthly Yield", value: "$33M" },
-                        ]}
-                        onClick={() => setActiveTab("treasury")}
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                       <InfraPillarCard
                         icon={Shield}
                         title="Compliance Engine"
@@ -441,7 +423,7 @@ export default function DashboardPage() {
               <span className="text-primary-foreground font-bold text-xs">V</span>
             </div>
             <div>
-              <span className="text-sm font-bold text-foreground tracking-wide">VAULT</span>
+              <span className="text-sm font-bold text-foreground tracking-wide">DDSC-NEXUS</span>
               <span className="text-xs text-muted-foreground ml-2">Institutional WaaS Infrastructure</span>
             </div>
           </div>
@@ -488,27 +470,40 @@ function MetricCard({
   valueColor?: "success" | "destructive" | "warning" | "primary"
 }) {
   const colorClasses = {
-    success: "text-success",
-    destructive: "text-destructive",
-    warning: "text-warning",
-    primary: "text-primary"
+    success: "text-success bg-success/20",
+    destructive: "text-destructive bg-destructive/20",
+    warning: "text-warning bg-warning/20",
+    primary: "text-primary bg-primary/20"
   }
 
+  const borderClasses = {
+    success: "hover:border-success/50",
+    destructive: "hover:border-destructive/50",
+    warning: "hover:border-warning/50",
+    primary: "hover:border-primary/50"
+  }
+
+  const iconColor = trendColor || "primary"
+
   return (
-    <div className="bg-card border border-border rounded-lg p-4 transition-all hover:border-primary/50">
-      <div className="flex items-center gap-2 text-muted-foreground mb-2">
-        <Icon className="h-4 w-4" />
-        <span className="text-xs uppercase tracking-wide">{label}</span>
+    <div className={`group bg-card border border-border rounded-xl p-6 transition-all ${borderClasses[iconColor]}`}>
+      <div className="flex items-start gap-4">
+        <div className={`h-12 w-12 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 ${colorClasses[iconColor]}`}>
+          <Icon className="h-6 w-6" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs uppercase tracking-wider font-semibold text-muted-foreground mb-1">{label}</p>
+          <p className="text-3xl font-bold font-mono text-foreground">
+            <AnimatedCounter value={value} decimals={decimals} suffix={suffix} duration={2000} />
+          </p>
+          {trend && (
+            <p className={`text-xs mt-2 font-medium ${trendColor ? colorClasses[trendColor].split(" ")[0] : "text-success"}`}>{trend}</p>
+          )}
+          {subtext && !trend && (
+            <p className="text-xs text-muted-foreground mt-2">{subtext}</p>
+          )}
+        </div>
       </div>
-      <p className={`text-2xl font-bold font-mono ${valueColor ? colorClasses[valueColor] : "text-foreground"}`}>
-        <AnimatedCounter value={value} decimals={decimals} suffix={suffix} duration={2000} />
-      </p>
-      {trend && (
-        <p className={`text-xs mt-1 ${trendColor ? colorClasses[trendColor] : "text-muted-foreground"}`}>{trend}</p>
-      )}
-      {subtext && !trend && (
-        <p className="text-xs text-muted-foreground mt-1">{subtext}</p>
-      )}
     </div>
   )
 }
