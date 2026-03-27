@@ -45,10 +45,7 @@ const treasuryChartData = [
 ]
 
 const treasuryAssets = [
-  { name: "USDC", balance: "$1.24B", allocation: 50, yield: "5.2%", change: 2.4 },
-  { name: "USDT", balance: "$620M", allocation: 25, yield: "4.8%", change: 1.2 },
-  { name: "USD", balance: "$372M", allocation: 15, yield: "4.1%", change: 0.8 },
-  { name: "AED Stablecoin", balance: "$248M", allocation: 10, yield: "3.9%", change: 3.1 },
+  { name: "DDSC", balance: "$2.47B", allocation: 100, yield: "4.87%", change: 2.4 },
 ]
 
 const complianceChartData = [
@@ -79,10 +76,10 @@ const threatEvents = [
 ]
 
 const activities = [
-  { id: "1", type: "transfer_in" as const, title: "Incoming Settlement", description: "From Abu Dhabi Commercial Bank", timestamp: "3 min ago", amount: "+$45.2M", user: "System" },
+  { id: "1", type: "transfer_in" as const, title: "Incoming Settlement", description: "From Infinia Technologies", timestamp: "3 min ago", amount: "+$45.2M", user: "System" },
   { id: "2", type: "policy_update" as const, title: "Policy Rule Updated", description: "Transaction limit increased for verified corporates", timestamp: "15 min ago", user: "Sarah M." },
   { id: "3", type: "compliance" as const, title: "AML Alert Resolved", description: "False positive - legitimate treasury operation", timestamp: "28 min ago", user: "Ahmed K." },
-  { id: "4", type: "transfer_out" as const, title: "Outgoing Wire", description: "To Emirates NBD", timestamp: "45 min ago", amount: "-$12.8M", user: "Treasury Ops" },
+  { id: "4", type: "transfer_out" as const, title: "Outgoing Wire", description: "To Esyasoft", timestamp: "45 min ago", amount: "-$12.8M", user: "Treasury Ops" },
   { id: "5", type: "approval" as const, title: "Multi-Sig Approval", description: "Large transfer approved (3/3 signatures)", timestamp: "1 hour ago", amount: "$78.5M", user: "Executive Team" },
   { id: "6", type: "user" as const, title: "New User Added", description: "Compliance analyst role assigned", timestamp: "2 hours ago", user: "Admin" },
 ]
@@ -235,19 +232,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Infrastructure Pillars */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                      <InfraPillarCard
-                        icon={Landmark}
-                        title="Treasury Infrastructure"
-                        description="Institutional-grade liquidity management"
-                        color="primary"
-                        stats={[
-                          { label: "Yield Pools", value: "4" },
-                          { label: "Top APY", value: "5.2%" },
-                          { label: "Monthly Yield", value: "$33M" },
-                        ]}
-                        onClick={() => setActiveTab("treasury")}
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                       <InfraPillarCard
                         icon={Shield}
                         title="Compliance Engine"
